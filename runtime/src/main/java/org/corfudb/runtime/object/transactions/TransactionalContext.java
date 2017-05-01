@@ -75,9 +75,7 @@ public class TransactionalContext {
     public static AbstractTransactionalContext newContext(AbstractTransactionalContext context) {
         log.debug("TX begin[{}]", context);
         if (getRootContext() != null)
-            synchronized (TransactionalContext.getRootContext().getTransactionID()) {
                 getTransactionStack().addLast(context);
-            }
         else
             getTransactionStack().addLast(context);
         return context;
@@ -88,10 +86,7 @@ public class TransactionalContext {
      * @return          The context which was removed from the transaction stack.
      */
     public static AbstractTransactionalContext removeContext() {
-        AbstractTransactionalContext r;
-        synchronized (TransactionalContext.getRootContext().getTransactionID()) {
-            r = getTransactionStack().pollLast();
-        }
+        AbstractTransactionalContext r = getTransactionStack().pollLast();
         if (getTransactionStack().isEmpty()) {
             synchronized (getTransactionStack())
             {
@@ -99,5 +94,16 @@ public class TransactionalContext {
             }
         }
         return r;
+    }
+
+    /**
+     * Get the transaction stack as a list.
+     * @return  The transaction stack as a list.
+     */
+    public static List<AbstractTransactionalContext> getTransactionStackAsList() {
+        List<AbstractTransactionalContext> listReverse =
+                getTransactionStack().stream().collect(Collectors.toList());
+        Collections.reverse(listReverse);
+        return listReverse;
     }
 }

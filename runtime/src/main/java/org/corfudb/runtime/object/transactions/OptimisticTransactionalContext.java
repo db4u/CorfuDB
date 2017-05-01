@@ -160,9 +160,8 @@ public class OptimisticTransactionalContext extends AbstractTransactionalContext
             // We are setting the current context to the root context of nested transactions.
             // Upon sync forward
             // the stream will replay every entries from all parent transactional context.
-            WriteSetSMRStream newSMRStream = new WriteSetSMRStream(
-                    TransactionalContext.getRootContext().transactionID,
-                    TransactionalContext.getTransactionStack(),
+            WriteSetSMRStream newSMRStream =
+                    new WriteSetSMRStream(TransactionalContext.getTransactionStackAsList(),
                     object.getID());
 
             object.setOptimisticStreamUnsafe(newSMRStream);
