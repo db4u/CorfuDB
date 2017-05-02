@@ -164,6 +164,7 @@ public class OptimisticTransactionalContext extends AbstractTransactionalContext
                     new WriteSetSMRStream(TransactionalContext.getTransactionStackAsList(),
                     object.getID());
 
+            newSMRStream.currentContext = 0;
             object.setOptimisticStreamUnsafe(newSMRStream);
         }
     }
