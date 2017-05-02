@@ -152,6 +152,8 @@ public class WriteSetSMRStream implements ISMRStream {
         if (Address.nonAddress(writePos)) {
             return null;
         }
+        if (Address.nonAddress(currentContextPos))
+            currentContextPos = -1;
         return Collections.singletonList(contexts
                 .get(currentContext)
                 .getWriteSetEntryList(id)
