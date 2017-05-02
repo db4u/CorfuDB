@@ -180,7 +180,7 @@ public class WriteSetSMRStream implements ISMRStream {
                 }
             } while (contexts
                     .get(currentContext)
-                    .getWriteSetEntrySize(id) > 0);
+                    .getWriteSetEntrySize(id) == 0);
             currentContextPos = contexts
                     .get(currentContext)
                     .getWriteSetEntrySize(id)-1 ;

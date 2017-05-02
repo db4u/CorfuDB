@@ -171,6 +171,9 @@ public class OptimisticTransactionalContext extends AbstractTransactionalContext
 
     /** Logs an update. In the case of an optimistic transaction, this update
      * is logged to the write set for the transaction.
+     *
+     * Return the "address" of the update; used for retrieving results from operations via getUpcallRestult.
+     *
      * @param proxy         The proxy making the request.
      * @param updateEntry   The timestamp of the request.
      * @param <T>           The type of the proxy.
@@ -184,12 +187,7 @@ public class OptimisticTransactionalContext extends AbstractTransactionalContext
                 this, proxy, updateEntry.getSMRMethod(),
                 updateEntry.getSMRArguments(), conflictObjects);
 
-        // Insert the modification into writeSet.
-        addToWriteSet(proxy, updateEntry, conflictObjects);
-
-        // Return the "address" of the update; used for retrieving results from operations via getUpcallRestult.
-        // FIXME this should use the SMRStream API
-        return getWriteSetEntryList(proxy.getStreamID()).size() - 1;
+        return addToWriteSet(proxy, updateEntry, conflictObjects);
     }
 
     /**
