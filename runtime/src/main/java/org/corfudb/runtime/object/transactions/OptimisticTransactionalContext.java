@@ -155,7 +155,7 @@ public class OptimisticTransactionalContext extends AbstractTransactionalContext
     <T> void setAsOptimisticStream(VersionLockedObject<T> object) {
         if (object.getOptimisticStreamUnsafe() == null ||
                 !object.getOptimisticStreamUnsafe()
-                        .isStreamCurrentContextThreadCurrentContext()) {
+                        .isStreamForThisThread()) {
 
             // We are setting the current context to the root context of nested transactions.
             // Upon sync forward
